@@ -2,7 +2,9 @@ package com.example.groundtransport.controller;
 
 import com.example.groundtransport.entity.Admin;
 import com.example.groundtransport.services.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,31 +25,30 @@ public class AdminController {
     }
 
     @PostMapping
-    public Admin createAdmin(@RequestBody Admin admin) {
-        return adminService.create(admin);
+    public ResponseEntity<Admin> createAdmin(@Valid @RequestBody Admin admin) {
+        return ResponseEntity.ok(adminService.create(admin));
     }
 
     @GetMapping
-    public List<Admin> getAllAdmins() {
-        return adminService.findAll();
+    public ResponseEntity<List<Admin>> getAllAdmins() {
+        return ResponseEntity.ok(adminService.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Admin> getAdminById(@PathVariable Long id) {
-        return adminService.findById(id);
+    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+        return adminService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-// can refine this put method to update various field based on url path
+
     @PutMapping("/{id}")
-    public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
-        admin.setName(admin.getName());
-        admin.setEmail(admin.getEmail());
-
-
-        return adminService.update(id, admin);
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @Valid @RequestBody Admin updatedAdmin) {
+        return ResponseEntity.ok(adminService.update(id, updatedAdmin));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAdmin(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         adminService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

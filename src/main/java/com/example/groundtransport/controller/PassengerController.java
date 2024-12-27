@@ -2,6 +2,7 @@ package com.example.groundtransport.controller;
 
 import com.example.groundtransport.entity.Passenger;
 import com.example.groundtransport.services.PassengerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +13,12 @@ import java.util.List;
 public class PassengerController {
     private final PassengerService passengerService;
 
-    // Constructor injection
     public PassengerController(PassengerService passengerService) {
         this.passengerService = passengerService;
     }
 
     @PostMapping
-    public ResponseEntity<Passenger> createPassenger(@RequestBody Passenger passenger) {
+    public ResponseEntity<Passenger> createPassenger(@Valid @RequestBody Passenger passenger) {
         return ResponseEntity.ok(passengerService.create(passenger));
     }
 
@@ -30,8 +30,7 @@ public class PassengerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @RequestBody Passenger passenger) {
-        //passenger.setName();
+    public ResponseEntity<Passenger> updatePassenger(@PathVariable Long id, @Valid @RequestBody Passenger passenger) {
         return ResponseEntity.ok(passengerService.update(id, passenger));
     }
 

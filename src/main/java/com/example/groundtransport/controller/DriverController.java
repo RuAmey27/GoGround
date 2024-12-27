@@ -5,7 +5,9 @@ package com.example.groundtransport.controller;
 import com.example.groundtransport.entity.Driver;
 
 import com.example.groundtransport.services.DriverService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,27 +25,30 @@ public class DriverController {
     }
 
     @PostMapping
-    public Driver createDriver(@RequestBody Driver driver) {
-        return driverService.create(driver);
+    public ResponseEntity<Driver> createDriver(@Valid @RequestBody Driver driver) {
+        return ResponseEntity.ok(driverService.create(driver));
     }
 
     @GetMapping
-    public List<Driver> getAllDrivers() {
-        return driverService.findAll();
+    public ResponseEntity<List<Driver>> getAllDrivers() {
+        return ResponseEntity.ok(driverService.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Driver> getDriverById(@PathVariable Long id) {
-        return driverService.findById(id);
+    public ResponseEntity<Driver> getDriverById(@PathVariable Long id) {
+        return driverService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public Driver updateDriver(@PathVariable Long id, @RequestBody Driver driver) {
-        return driverService.update(id, driver);
+    public ResponseEntity<Driver> updateDriver(@PathVariable Long id, @Valid @RequestBody Driver driver) {
+        return ResponseEntity.ok(driverService.update(id, driver));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDriver(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDriver(@PathVariable Long id) {
         driverService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

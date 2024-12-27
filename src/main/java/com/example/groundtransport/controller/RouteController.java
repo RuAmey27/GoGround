@@ -3,11 +3,13 @@ package com.example.groundtransport.controller;
 
 import com.example.groundtransport.entity.Route;
 import com.example.groundtransport.services.RouteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/route")
@@ -21,28 +23,31 @@ public class RouteController {
     }
 
     @PostMapping
-    public Route createRoute(@RequestBody Route route) {
-        return routeService.create(route);
+    public ResponseEntity<Route> createRoute(@Valid @RequestBody Route route) {
+        return ResponseEntity.ok(routeService.create(route));
     }
 
     @GetMapping
-    public List<Route> getAllRoutes() {
-        return routeService.findAll();
+    public ResponseEntity<List<Route>> getAllRoutes() {
+        return ResponseEntity.ok(routeService.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Route> getRouteById(@PathVariable Long id) {
-        return routeService.findById(id);
+    public ResponseEntity<Route> getRouteById(@PathVariable Long id) {
+        return routeService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public Route updateRoute(@PathVariable Long id, @RequestBody Route route) {
-        return routeService.update(id, route);
+    public ResponseEntity<Route> updateRoute(@PathVariable Long id, @Valid @RequestBody Route route) {
+        return ResponseEntity.ok(routeService.update(id, route));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRoute(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRoute(@PathVariable Long id) {
         routeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

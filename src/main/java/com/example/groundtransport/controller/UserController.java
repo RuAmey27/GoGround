@@ -2,6 +2,7 @@ package com.example.groundtransport.controller;
 
 import com.example.groundtransport.entity.User;
 import com.example.groundtransport.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +11,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     private final UserService userService;
 
-    // Constructor injection
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return ResponseEntity.ok(userService.create(user));
     }
 
@@ -30,9 +31,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setName(user.getName());
-        return ResponseEntity.ok(userService.update(id, user));
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
+        return ResponseEntity.ok(userService.update(id, updatedUser));
     }
 
     @DeleteMapping("/{id}")

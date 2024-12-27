@@ -1,6 +1,9 @@
 package com.example.groundtransport.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,11 +17,15 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long driverID;
 
+    @NotBlank(message = "Driver name cannot be blank")
     private String name;
+
+    @NotBlank(message = "License number cannot be blank")
+    @Size(min = 5, max = 15, message = "License number must be between 5 and 15 characters")
     private String licenseNumber;
 
     @ElementCollection
-    private Map<String, String> contactDetails;
+    private Map<String, @Pattern(regexp = "\\+?[0-9]{10,15}", message = "Invalid contact number") String> contactDetails;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
@@ -29,4 +36,3 @@ public class Driver {
 
     // Getters and Setters
 }
-
