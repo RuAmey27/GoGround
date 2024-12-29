@@ -1,11 +1,9 @@
 package com.example.groundtransport.repository;
 
+import com.example.groundtransport.entity.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-
 @Repository
-public interface BaseRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
-
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 }

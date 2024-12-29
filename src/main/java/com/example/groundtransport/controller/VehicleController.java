@@ -76,9 +76,9 @@ public class VehicleController {
     public ResponseEntity<EntityModel<Vehicle>> updateVehicle(@PathVariable Long id,
                                                               @RequestBody Vehicle updatedVehicle,
                                                               @RequestParam Role role) {
-        if (!role.equals(Role.ADMIN)) {
-            return ResponseEntity.status(403).build(); // Forbidden for non-admins
-        }
+//        if (!role.equals(Role.ADMIN)) {
+//            return ResponseEntity.status(403).build(); // Forbidden for non-admins
+//        }
 
         // Restrict updates to specific fields
         Optional<Vehicle> existingVehicleOpt = vehicleService.findById(id);
@@ -104,9 +104,9 @@ public class VehicleController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id, @RequestParam Role role) {
-        if (!role.equals(Role.ADMIN)) {
-            return ResponseEntity.status(403).build(); // Forbidden for non-admins
-        }
+//        if (!role.equals(Role.ADMIN)) {
+//            return ResponseEntity.status(403).build(); // Forbidden for non-admins
+//        }
         vehicleService.delete(id);
         return ResponseEntity.noContent().build();
     }

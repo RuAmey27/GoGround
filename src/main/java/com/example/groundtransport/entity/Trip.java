@@ -9,38 +9,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "trips")
 public class Trip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "trip_id")
     private Long tripID;
 
-    @ManyToOne(optional = false) // Ensures a Trip must have a Route
+    @ManyToOne(optional = false)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
-    @ManyToOne(optional = false) // Ensures a Trip must have a Vehicle
+    @ManyToOne(optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
-    @ManyToOne(optional = false) // Ensures a Trip must have a Driver
+    @ManyToOne(optional = false)
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
 
-    @Column(nullable = false)
-    private String status; // scheduled | ongoing | completed | canceled
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    public void setStatus(String status) {
-        if (!isValidStatus(status)) {
-            throw new IllegalArgumentException("Invalid status: " + status);
-        }
-        this.status = status;
-    }
-
-    private boolean isValidStatus(String status) {
-        return status.equals("scheduled") || status.equals("ongoing") ||
-                status.equals("completed") || status.equals("canceled");
-    }
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 }
-
-

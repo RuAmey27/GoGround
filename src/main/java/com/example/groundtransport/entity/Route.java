@@ -9,25 +9,26 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-
+@Table(name = "route")
 public class Route {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "route_id")
     private Long routeID;
 
+    @Column(name = "source", nullable = false)
     @NotBlank(message = "Source cannot be blank")
     private String source;
 
+    @Column(name = "destination", nullable = false)
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<Trip> trips;
-
-    // Getters and Setters
 }
-
